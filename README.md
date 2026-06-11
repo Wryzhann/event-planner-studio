@@ -31,7 +31,7 @@ The system provides dual functionality:
    - Using `.env.example` as a reference, provide your Supabase connection strings:
    ```env
    VITE_SUPABASE_URL=your_supabase_url
-   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+   VITE_SUPABASE_ANON_KEY=your_supabase_publishable_key
    ```
 
 ## 3. Security Features Summary
@@ -80,15 +80,3 @@ npm run start
 - **Zod**: TypeScript-first schema validation for incoming payloads.
 - **xss**: Mitigation tool to sanitize untrusted HTML.
 
-## 6. Screenshot(s) of system
-
-> **Note to developer:** Please replace the paths below with the actual screenshots of your running system before submitting to your repository.
-
-### Public Booking Interface
-![Booking System Screenshot](./docs/screenshots/booking.png)
-
-### Administrative Dashboard & Audit Logs
-![Admin Dashboard Screenshot](./docs/screenshots/admin-dashboard.png)
-
-### Secure Authentication Screen
-![Login Screenshot](./docs/screenshots/login.png)
