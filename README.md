@@ -28,7 +28,7 @@ The system provides dual functionality:
 
 3. **Configure Environment Variables:**
    - Create a `.env` file in the root directory.
-   - Using `.env.example` as a reference, provide your Supabase connection strings:
+   - Using `.env` as a reference, provide your Supabase connection strings:
    ```env
    VITE_SUPABASE_URL=your_supabase_url
    VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
