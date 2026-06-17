@@ -141,13 +141,12 @@ npm run start
 
 ## 6. Screenshot(s) of system
 
-> **Note to developer:** Please replace the paths below with the actual screenshots of your running system before submitting to your repository.
-
 ### Public Booking Interface
-![Booking System Screenshot](./docs/screenshots/booking.png)
+![Alt text](https://github.com/Wryzhann/event-planner-studio/blob/08ef64ee73048a72426b604427542ae537e030e3/Public%20Booking%20Interface.png)
 
 ### Administrative Dashboard & Audit Logs
-![Admin Dashboard Screenshot](./docs/screenshots/admin-dashboard.png)
+![Alt text](https://github.com/Wryzhann/event-planner-studio/blob/08ef64ee73048a72426b604427542ae537e030e3/Admin%20Dashboard.png)
+![Alt text](https://github.com/Wryzhann/event-planner-studio/blob/08ef64ee73048a72426b604427542ae537e030e3/Audit%20Logs.png)
 
 ### Secure Authentication Screen
-![Login Screenshot](./docs/screenshots/login.png)
+![Alt text](https://github.com/Wryzhann/event-planner-studio/blob/08ef64ee73048a72426b604427542ae537e030e3/Secure%20Authentication%20Screen.png)
