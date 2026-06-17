@@ -17,8 +17,8 @@ The system provides dual functionality:
 
 1. **Clone the repository:**
    ```bash
-   git clone https://github.com/your-username/your-repo-name.git
-   cd your-repo-name
+   git clone https://github.com/Wryzhann/event-planner-studio.git
+   cd event-planner-studio
    ```
 
 2. **Install node modules:**
