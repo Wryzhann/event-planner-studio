@@ -5,8 +5,8 @@ dotenv.config();
 const supabase = createClient(process.env.VITE_SUPABASE_URL!, process.env.VITE_SUPABASE_ANON_KEY!);
 
 async function check() {
-  const { data, error } = await supabase.from('appointments').select('*');
-  console.log('appointments:', JSON.stringify(data, null, 2), error);
+  const { data: adminUsers, error: errorAdmin } = await supabase.from('admin_users').select('*');
+  console.log('admin_users:', { adminUsers, errorAdmin });
 }
 
 check();

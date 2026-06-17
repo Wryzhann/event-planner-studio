@@ -17,8 +17,8 @@ The system provides dual functionality:
 
 1. **Clone the repository:**
    ```bash
-   https://github.com/Wryzhann/event-planner-studio.git
-   cd event-planner-studio
+   git clone https://github.com/your-username/your-repo-name.git
+   cd your-repo-name
    ```
 
 2. **Install node modules:**
@@ -31,7 +31,66 @@ The system provides dual functionality:
    - Using `.env.example` as a reference, provide your Supabase connection strings:
    ```env
    VITE_SUPABASE_URL=your_supabase_url
-   VITE_SUPABASE_ANON_KEY=your_supabase_publishable_key
+   VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
+   ```
+
+4. **Database Schema Setup (Supabase SQL Editor):**
+   To leverage database storage for user profiles, tasks, and audit logs, execute the following SQL script in your **Supabase SQL Editor**:
+
+   ```sql
+   -- Create Profiles Table (ASVS V4 least privilege profile registry)
+   CREATE TABLE IF NOT EXISTS public.profiles (
+     id UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
+     email TEXT NOT NULL,
+     role TEXT DEFAULT 'user' CHECK (role IN ('user', 'admin')),
+     created_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
+   );
+
+   -- Create Audit Logs Table (ASVS V7 secure event-trail tracking)
+   CREATE TABLE IF NOT EXISTS public.audit_logs (
+     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+     action TEXT NOT NULL,
+     performed_by UUID NULL,
+     details TEXT NOT NULL,
+     created_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
+   );
+
+   -- Create Tasks Table (ASVS V4 secure CRUD validation schema)
+   CREATE TABLE IF NOT EXISTS public.tasks (
+     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
+     user_id UUID REFERENCES auth.users(id) ON DELETE CASCADE NOT NULL,
+     title TEXT NOT NULL,
+     description TEXT NULL,
+     status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'in_progress', 'completed')),
+     created_at TIMESTAMPTZ DEFAULT timezone('utc'::text, now()) NOT NULL
+   );
+
+   -- Enable Row Level Security (RLS) across all tables to enforce data privacy
+   ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+   ALTER TABLE public.audit_logs ENABLE ROW LEVEL SECURITY;
+   ALTER TABLE public.tasks ENABLE ROW LEVEL SECURITY;
+
+   -- Profile Security Policies
+   CREATE POLICY "Allow users to read their own profile" 
+     ON public.profiles FOR SELECT USING (auth.uid() = id);
+
+   CREATE POLICY "Allow admins to read all profiles" 
+     ON public.profiles FOR SELECT USING (
+       (SELECT role FROM public.profiles WHERE id = auth.uid()) = 'admin'
+     );
+
+   -- Tasks Security Policies: Strict ownership matching (Prevents IDOR)
+   CREATE POLICY "Users can fully manage their own tasks"
+     ON public.tasks FOR ALL USING (auth.uid() = user_id);
+
+   -- Audit Logs Security Policies: Write-only for users/system, selective read for Admins
+   CREATE POLICY "Users and microservice can insert logs"
+     ON public.audit_logs FOR INSERT WITH CHECK (true);
+
+   CREATE POLICY "Only admins can query audit trail logs"
+     ON public.audit_logs FOR SELECT USING (
+       (SELECT role FROM public.profiles WHERE id = auth.uid()) = 'admin'
+     );
    ```
 
 ## 3. Security Features Summary
@@ -80,3 +139,15 @@ npm run start
 - **Zod**: TypeScript-first schema validation for incoming payloads.
 - **xss**: Mitigation tool to sanitize untrusted HTML.
 
+## 6. Screenshot(s) of system
+
+> **Note to developer:** Please replace the paths below with the actual screenshots of your running system before submitting to your repository.
+
+### Public Booking Interface
+![Booking System Screenshot](./docs/screenshots/booking.png)
+
+### Administrative Dashboard & Audit Logs
+![Admin Dashboard Screenshot](./docs/screenshots/admin-dashboard.png)
+
+### Secure Authentication Screen
+![Login Screenshot](./docs/screenshots/login.png)
